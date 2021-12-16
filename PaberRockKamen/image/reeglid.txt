@@ -1,0 +1,10 @@
+﻿Mängijad loevad koos rusikatega raputades valjusti "kivi... käärid... paber... üks... kaks... kolm". "Kolme" arvel näitavad nad samaaegselt käega ühte kolmest märgist: kivi, käärid või paber.
+
+Märgid on Pildil.
+
+Võitja määratakse järgmiste reeglite järgi:
+
+Paber võidab kivi ("paber ümbritseb kivi").
+Kivi võidab käärid ("kivi nüristab või murrab käärid").
+Käärid võidavad paberi ("käärid lõikavad paberit").
+Kui mängijad näitasid sama märki, loetakse viik ja mäng mängitakse uuesti.
