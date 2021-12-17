@@ -6,6 +6,7 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Media;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -37,6 +38,18 @@ namespace PaberRockKamen
 
         public Form2()
         {
+            MainMenu menu = new MainMenu();
+            MenuItem menuFile = new MenuItem("Seaded");
+            menuFile.MenuItems.Add("Teema", new EventHandler(menuFile_Tema_Select)).Shortcut = Shortcut.CtrlS;
+            menuFile.MenuItems.Add("Audio", new EventHandler(menuFile_Zvuk_Select)).Shortcut = Shortcut.CtrlP;
+            menuFile.MenuItems.Add("Mängu reeglid", new EventHandler(menureeglid_Tema_Select));
+            menuFile.MenuItems.Add("Tagasi", new EventHandler(menuFile_Tagasi_Select)).Shortcut = Shortcut.CtrlX;
+            //menuFile.MenuItems.Add("Размер", new EventHandler());
+            //menuFile.MenuItems.Add("Postimees", new EventHandler());
+            menu.MenuItems.Add(menuFile);
+
+            this.Menu = menu;
+
 
             this.Height = 700;//свойство высота формы
             this.Width = 1200;//свойство ширины формы, если это свойство то после, ставится =
@@ -135,6 +148,86 @@ namespace PaberRockKamen
 
         }
 
+        private void menureeglid_Tema_Select(object sender, EventArgs e)
+        {
+            var reglid = File.ReadAllText(@"..\..\image\reeglid.txt");
+            var mangureglid = MessageBox.Show(reglid, "Mängu reeglid");
+        }
+
+        int scetcikzvuk = 0;
+        private void menuFile_Zvuk_Select(object sender, EventArgs e)
+        {
+            scetcikzvuk++;
+            if (scetcikzvuk == 1)
+            {
+                using (var soundPlayer = new SoundPlayer(@"../../sound/muzekaigraofficial.wav"))
+                {
+                    soundPlayer.Stop();
+                }
+            }
+            else if (scetcikzvuk == 2)
+            {
+                using (var soundPlayer = new SoundPlayer(@"../../sound/muzekaigraofficial.wav"))
+                {
+                    soundPlayer.Play();
+                }
+                scetcikzvuk = 0;
+            }
+        }
+
+        int scetcik = 0;
+        private void menuFile_Tema_Select(object sender, EventArgs e)
+        {
+            scetcik++;
+            if (scetcik == 1)
+            {
+                this.BackColor = Color.Black;
+                lbl.ForeColor = Color.White;
+                lbl2.ForeColor = Color.White;
+                lbl3.ForeColor = Color.White;
+                lbl4.ForeColor = Color.White;
+                rdb.ForeColor = Color.White;
+                rdb2.ForeColor = Color.White;
+                rdb3.ForeColor = Color.White;
+                btn.ForeColor = Color.Black;
+                btn.BackColor = Color.White;
+            }
+            else if (scetcik == 2)
+            {
+                this.BackColor = Color.White;
+                lbl.ForeColor = Color.Black;
+                lbl2.ForeColor = Color.Black;
+                lbl3.ForeColor = Color.Black;
+                lbl4.ForeColor = Color.Black;
+                rdb.ForeColor = Color.Black;
+                rdb2.ForeColor = Color.Black;
+                rdb3.ForeColor = Color.Black;
+                btn.ForeColor = Color.White;
+                btn.BackColor = Color.Black;
+            }
+            else if (scetcik == 3)
+            {
+                this.BackColor = Color.Gainsboro;
+                lbl.ForeColor = Color.Black;
+                lbl2.ForeColor = Color.Black;
+                lbl3.ForeColor = Color.Black;
+                lbl4.ForeColor = Color.Black;
+                rdb.ForeColor = Color.Black;
+                rdb2.ForeColor = Color.Black;
+                rdb3.ForeColor = Color.Black;
+                btn.ForeColor = Color.Black;
+                btn.BackColor = Color.Honeydew;
+                scetcik = 0;
+            }
+        }
+
+        private void menuFile_Tagasi_Select(object sender, EventArgs e)
+        {
+            Form1 form1 = new Form1();
+            form1.Show();
+            this.Hide();
+        }
+
         private void Rdb3_Click1(object sender, EventArgs e)
         {
             ptb.Image = Image.FromFile(@"..\..\image\" + kartinkicel[2]);
@@ -211,7 +304,10 @@ namespace PaberRockKamen
                             sw.WriteLine(text);
                         }*/
 
-
+                    using (StreamWriter sr = new StreamWriter(@"..\..\image\Rezultat.txt", true))
+                    {
+                        sr.WriteLine(lbl4.Text + " võita");
+                    }
 
 
                     var answer = MessageBox.Show(lbl4.Text + " võita. Restart?", "Tulemus", MessageBoxButtons.YesNo);
@@ -240,6 +336,11 @@ namespace PaberRockKamen
                 lbl2.Text = podcetbot;
                 if (scetcikbot == 3)
                 {
+
+                    using (StreamWriter srb = new StreamWriter(@"..\..\image\Rezultat.txt", true))
+                    {
+                        srb.WriteLine("Bot Vasja võita");
+                    }
 
                     var answer = MessageBox.Show("Bot Vasja võita. Restart?", "Tulemus", MessageBoxButtons.YesNo);
                     if (answer == DialogResult.Yes)

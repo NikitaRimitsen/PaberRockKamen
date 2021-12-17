@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Threading;
 using System.IO;
+using System.Media;
 
 namespace PaberRockKamen
 {
@@ -22,6 +23,7 @@ namespace PaberRockKamen
         Button btn2;
         Button btn3;
         Label lbl;
+        int igrasound = 0;
 
 
         public Form1()
@@ -30,6 +32,13 @@ namespace PaberRockKamen
             this.Width = 700;//свойство ширины формы, если это свойство то после, ставится =
             this.Text = "Rock Paper Scissors";//Text - название, заголовок формы
             this.BackColor = Color.Gainsboro;
+
+            using (var soundPlayer = new SoundPlayer(@"../../sound/muzekaigraofficial.wav"))
+            {
+                //igrasound = 0;
+                soundPlayer.Play();
+            }
+
 
 
             tree = new TreeView();
@@ -40,10 +49,11 @@ namespace PaberRockKamen
 
             MainMenu menu = new MainMenu();
             MenuItem menuFile = new MenuItem("Seaded");
-            menuFile.MenuItems.Add("Teema", new EventHandler(menuFile_Tema_Select)).Shortcut = Shortcut.CtrlS;           
+            menuFile.MenuItems.Add("Teema", new EventHandler(menuFile_Tema_Select)).Shortcut = Shortcut.CtrlS;
+            menuFile.MenuItems.Add("Audio", new EventHandler(menuFile_Zvuk_Select)).Shortcut = Shortcut.CtrlP;
             menuFile.MenuItems.Add("Mängu reeglid", new EventHandler(menureeglid_Tema_Select));
             menuFile.MenuItems.Add("Mängu arendamine", new EventHandler(menuarendamine_Tema_Select));
-            menuFile.MenuItems.Add("Exit", new EventHandler(menuFile_Exit_Select));
+            menuFile.MenuItems.Add("Exit", new EventHandler(menuFile_Exit_Select)).Shortcut = Shortcut.CtrlX;
             //menuFile.MenuItems.Add("Размер", new EventHandler());
             //menuFile.MenuItems.Add("Postimees", new EventHandler());
             menu.MenuItems.Add(menuFile);
@@ -75,18 +85,18 @@ namespace PaberRockKamen
             btn.Width = 150;//ширина кнопки
             btn.Click += Btn_Click;
 
-            /*btn2 = new Button();
+            btn2 = new Button();
             btn2.BackColor = Color.Honeydew;//фон кнопки
-            btn2.Text = "Mäng kahele";//текст внутри кнопки
-            btn2.Location = new Point(280, 200);//Point(x,y) - местоположение кнопки
+            btn2.Text = "Viimaste mängude tulemused";//текст внутри кнопки
+            btn2.Location = new Point(250, 320);//Point(x,y) - местоположение кнопки
             btn2.Height = 60;//высота кнопки
-            btn2.Width = 120;//ширина кнопки
-            btn2.Click += Btn_Click2;*/
+            btn2.Width = 150;//ширина кнопки
+            btn2.Click += Btn_Click2;
 
             btn3 = new Button();
             btn3.BackColor = Color.Honeydew;//фон кнопки
             btn3.Text = "Bot Ivan vastu Bot Vasja";//текст внутри кнопки
-            btn3.Location = new Point(250, 300);//Point(x,y) - местоположение кнопки
+            btn3.Location = new Point(250, 200);//Point(x,y) - местоположение кнопки
             btn3.Height = 60;//высота кнопки
             btn3.Width = 150;//ширина кнопки
             btn3.Click += Btn_Click3;
@@ -95,6 +105,27 @@ namespace PaberRockKamen
             this.Controls.Add(btn2);
             this.Controls.Add(btn3);
             this.Controls.Add(lbl);
+        }
+
+        int scetcikzvuk = 0;
+        private void menuFile_Zvuk_Select(object sender, EventArgs e)
+        {
+            scetcikzvuk++;
+            if (scetcikzvuk == 1)
+            {
+                using (var soundPlayer = new SoundPlayer(@"../../sound/muzekaigraofficial.wav"))
+                {
+                    soundPlayer.Stop();
+                }
+            }
+            else if (scetcikzvuk == 2)
+            {
+                using (var soundPlayer = new SoundPlayer(@"../../sound/muzekaigraofficial.wav"))
+                {
+                    soundPlayer.Play();
+                }
+                scetcikzvuk = 0;
+            }
         }
 
         private void menuarendamine_Tema_Select(object sender, EventArgs e)
@@ -114,18 +145,21 @@ namespace PaberRockKamen
             BotvsBot form3 = new BotvsBot();
             form3.Show();
             this.Hide();
+            using (var soundPlayer = new SoundPlayer(@"../../sound/muzekaigraofficial.wav"))
+            {
+                soundPlayer.Play();
+            }
         }
 
-        /*private void Btn_Click2(object sender, EventArgs e)
+        private void Btn_Click2(object sender, EventArgs e)
         {
-            Form3mängu2 form3 = new Form3mängu2();
-            form3.Show();
-            this.Hide();
-        }*/
+            var rezultatvaata = File.ReadAllText(@"..\..\image\Rezultat.txt");
+            var rezulataat = MessageBox.Show(rezultatvaata, "Viimaste mängude tulemused");
+        }
 
         private void Btn_Click(object sender, EventArgs e)
         {
-            string text = Interaction.InputBox("Kirjuta oma nimi", "Name player", "Name");
+            string text = Interaction.InputBox("Kirjuta oma nimi", "Nimi mängija", "Nimi");
 
 
             using (StreamWriter sr = new StreamWriter(@"..\..\image\Nameplayer.txt", true))
@@ -135,9 +169,13 @@ namespace PaberRockKamen
             Form2 form2 = new Form2();
             form2.Show();
             this.Hide();
+            SoundPlayer player = new SoundPlayer();
+            using (var soundPlayer = new SoundPlayer(@"../../sound/muzekaigraofficial.wav"))
+            {
+                soundPlayer.Play();
+            }
         }
 
-        //p1==v1[0]
         private void Tree_AfterSelect(object sender, TreeViewEventArgs e)
         {
 
@@ -153,8 +191,8 @@ namespace PaberRockKamen
                 lbl.ForeColor = Color.White;
                 btn.ForeColor = Color.Black;
                 btn.BackColor = Color.White;
-                //btn2.ForeColor = Color.Black;
-                //btn2.BackColor = Color.White;
+                btn2.ForeColor = Color.Black;
+                btn2.BackColor = Color.White;
                 btn3.ForeColor = Color.Black;
                 btn3.BackColor = Color.White;
             }
@@ -164,8 +202,8 @@ namespace PaberRockKamen
                 lbl.ForeColor = Color.Black;
                 btn.ForeColor = Color.White;
                 btn.BackColor = Color.Black;
-                //btn2.ForeColor = Color.White;
-                //btn2.BackColor = Color.Black;
+                btn2.ForeColor = Color.White;
+                btn2.BackColor = Color.Black;
                 btn3.ForeColor = Color.White;
                 btn3.BackColor = Color.Black;
             }
@@ -175,8 +213,8 @@ namespace PaberRockKamen
                 lbl.ForeColor = Color.Black;
                 btn.ForeColor = Color.Black;
                 btn.BackColor = Color.Honeydew;
-                //btn2.ForeColor = Color.Black;
-                //btn2.BackColor = Color.Honeydew;
+                btn2.ForeColor = Color.Black;
+                btn2.BackColor = Color.Honeydew;
                 btn3.ForeColor = Color.Black;
                 btn3.BackColor = Color.Honeydew;
                 scetcik = 0;

@@ -1,3 +1,9 @@
-﻿Pomogali Rimitsen Nikita
-Delal Rimitsen Nikta
-Dizain Rimitsen Nikita
+﻿Mängude kujundaja - Rimitsen Nikita
+Kunstnik - Rimitsen Nikita
+Programmeerija - Rimitsen Nikita
+Helirežissöör - Rimitsen Nikita
+Testija - Rimitsen Nikita
+
+Aitäh, et need inimesed mind aitasid, 
+ilma nendeta poleks mäng õnnestunud.
+                               (c)Rimitsen Nikita

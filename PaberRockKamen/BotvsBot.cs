@@ -1,9 +1,12 @@
-﻿using System;
+﻿using Microsoft.VisualBasic;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Media;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -33,6 +36,18 @@ namespace PaberRockKamen
             this.Width = 1200;//свойство ширины формы, если это свойство то после, ставится =
             this.Text = "Botiga mängimine";//Text - название, заголовок формы
             this.BackColor = Color.Gainsboro;
+
+            MainMenu menu = new MainMenu();
+            MenuItem menuFile = new MenuItem("Seaded");
+            menuFile.MenuItems.Add("Teema", new EventHandler(menuFile_Tema_Select)).Shortcut = Shortcut.CtrlS;
+            menuFile.MenuItems.Add("Audio", new EventHandler(menuFile_Zvuk_Select)).Shortcut = Shortcut.CtrlP;
+            menuFile.MenuItems.Add("Mängu reeglid", new EventHandler(menureeglid_Tema_Select));
+            menuFile.MenuItems.Add("Tagasi", new EventHandler(menuFile_Tagasi_Select)).Shortcut = Shortcut.CtrlX;
+            //menuFile.MenuItems.Add("Размер", new EventHandler());
+            //menuFile.MenuItems.Add("Postimees", new EventHandler());
+            menu.MenuItems.Add(menuFile);
+
+            this.Menu = menu;
 
             ptb = new PictureBox();//создали PictureBox
             ptb.Size = new Size(300, 200);
@@ -92,6 +107,79 @@ namespace PaberRockKamen
             this.Controls.Add(lb);
         }
 
+        private void menureeglid_Tema_Select(object sender, EventArgs e)
+        {
+            var reglid = File.ReadAllText(@"..\..\image\reeglid.txt");
+            var mangureglid = MessageBox.Show(reglid, "Mängu reeglid");
+        }
+
+        int scetcikzvuk = 0;
+        private void menuFile_Zvuk_Select(object sender, EventArgs e)
+        {
+            scetcikzvuk++;
+            if (scetcikzvuk == 1)
+            {
+                using (var soundPlayer = new SoundPlayer(@"../../sound/muzekaigraofficial.wav"))
+                {
+                    soundPlayer.Stop();
+                }
+            }
+            else if (scetcikzvuk == 2)
+            {
+                using (var soundPlayer = new SoundPlayer(@"../../sound/muzekaigraofficial.wav"))
+                {
+                    soundPlayer.Play();
+                }
+                scetcikzvuk = 0;
+            }
+        }
+
+        int scetcik = 0;
+        private void menuFile_Tema_Select(object sender, EventArgs e)
+        {
+            scetcik++;
+            if (scetcik == 1)
+            {
+                this.BackColor = Color.Black;
+                lbl.ForeColor = Color.White;
+                lbl2.ForeColor = Color.White;
+                lbl3.ForeColor = Color.White;
+                lbl4.ForeColor = Color.White;
+                btn.ForeColor = Color.Black;
+                btn.BackColor = Color.White;
+            }
+            else if (scetcik == 2)
+            {
+                this.BackColor = Color.White;
+                lbl.ForeColor = Color.Black;
+                lbl2.ForeColor = Color.Black;
+                lbl3.ForeColor = Color.Black;
+                lbl4.ForeColor = Color.Black;
+
+                btn.ForeColor = Color.White;
+                btn.BackColor = Color.Black;
+            }
+            else if (scetcik == 3)
+            {
+                this.BackColor = Color.Gainsboro;
+                lbl.ForeColor = Color.Black;
+                lbl2.ForeColor = Color.Black;
+                lbl3.ForeColor = Color.Black;
+                lbl4.ForeColor = Color.Black;
+                btn.ForeColor = Color.Black;
+                btn.BackColor = Color.Honeydew;
+
+                scetcik = 0;
+            }
+        }
+
+        private void menuFile_Tagasi_Select(object sender, EventArgs e)
+        {
+            Form1 form1 = new Form1();
+            form1.Show();
+            this.Hide();
+        }
+
         int scetcikIvan = 0;
         int scetcikVasja = 0;
         private void Btn_Click(object sender, EventArgs e)
@@ -141,12 +229,25 @@ namespace PaberRockKamen
                 lbl3.Text = str1;
                 if (scetcikIvan==3)
                 {
+                    using (StreamWriter srb = new StreamWriter(@"..\..\image\Rezultat.txt", true))
+                    {
+                        srb.WriteLine("Bot Ivan võita");
+                    }
 
+                    var answer = MessageBox.Show("Bot Ivan võita. Restart?", "Tulemus", MessageBoxButtons.YesNo);
+                    if (answer == DialogResult.Yes)
+                    {
+                        BotvsBot botvsBot = new BotvsBot();
+                        botvsBot.Show();
+                        this.Hide();
+                    }
+                    else
+                    {
+                        Form1 form1 = new Form1();
+                        form1.Show();
+                        this.Hide();
+                    }
 
-                    MessageBox.Show("Bot Ivan võita", "Tulemus");
-                    Form1 form1 = new Form1();
-                    form1.Show();
-                    this.Hide();
                 }
             }
             else if (randombot2 == 1 && randombot1 == 2 || randombot2 == 2 && randombot1 == 3 || randombot2 == 3 && randombot1 == 1)
@@ -157,12 +258,30 @@ namespace PaberRockKamen
                 lbl4.Text = str2;
                 if (scetcikVasja==3)
                 {
-                    MessageBox.Show("Bot Vasja võita", "Tulemus");
-                    Form1 form1 = new Form1();
-                    form1.Show();
-                    this.Hide();
+                    using (StreamWriter srb = new StreamWriter(@"..\..\image\Rezultat.txt", true))
+                    {
+                        srb.WriteLine("Bot Vasja võita");
+                    }
+
+                    var answer = MessageBox.Show("Bot Vasja võita. Restart?", "Tulemus", MessageBoxButtons.YesNo);
+                    if (answer == DialogResult.Yes)
+                    {
+                        BotvsBot botvsBot = new BotvsBot();
+                        botvsBot.Show();
+                        this.Hide();
+                    }
+                    else
+                    {
+                        Form1 form1 = new Form1();
+                        form1.Show();
+                        this.Hide();
+                    }
+
                 }
             }
+
+
+
         }
 
         /*int scetcikkartinok = 0;

@@ -98,10 +98,14 @@
   <ItemGroup>
     <Content Include="image\bumaga.jpg" />
     <Content Include="image\kamen.jpg" />
+    <Content Include="sound\muzekaigraofficial.wav" />
+    <Content Include="sound\muzekaigra.mp3" />
+    <Content Include="sound\muzekaigraofficial1.wav" />
     <Content Include="image\Nameplayer.txt" />
     <Content Include="image\noznice.jpg" />
     <Content Include="image\razrabotka.txt" />
     <Content Include="image\reeglid.txt" />
+    <Content Include="image\Rezultat.txt" />
     <Content Include="image\vopros.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
